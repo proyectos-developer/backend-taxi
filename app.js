@@ -39,7 +39,8 @@ app.use(
 
 app.use(flash())
 app.use(morgan('dev'))
-app.use(express.urlencoded({ extended: false }))
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb' }));
 app.use(express.json())
 
 app.use(passport.initialize())
@@ -65,6 +66,7 @@ app.use(require('./routes/viajeros.js'))
 app.use(require('./routes/viajes.js'))
 app.use(require('./routes/cupones.js'))
 app.use(require('./routes/calificaciones.js'))
+app.use(require('./routes/compartir.js'))
 
 //Publico
 app.use(express.static(path.join(__dirname, 'public')))

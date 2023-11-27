@@ -125,6 +125,7 @@ router.post ('/app/conductor/documentos/:usuario', async (req, res) => {
     const {usuario} = req.params
 
     const updateDocumentos = {foto_licencia, foto_documento}
+    console.log ('entra')
     try{
         await pool.query ('UPDATE conductores set ? WHERE usuario = ?', [updateDocumentos, usuario])
         const documentos = await pool.query (`SELECT foto_licencia, foto_documento FROM conductores WHERE usuario = ?`, [usuario])
@@ -163,15 +164,22 @@ router.get ('/admin/conductor/calificaciones/:usuario', async (req, res) => {
     const {usuario} = req.params
     
     try {
-        const conductor = await pool.query (`SELECT conductores.nombres, conductores.apellidos, conductores.tipo_documento, conductores.nro_documento,
-                conductores.nro_telefono, conductores.nro_placa, conductores.licencia_conducir, conductores.marca_carro, conductores.modelo_carro, conductores.usuario,
-                conductores.color_carro, conductores.foto_perfil, SUM(calificaciones.calificacion) as calificacion, COUNT(calificaciones.id) as nro_calificaciones
-                FROM conductores JOIN calificaciones ON calificaciones.conductor = conductores.usuario WHERE conductores.usuario = ?`, [usuario])
-
-        return res.json ({
-            conductor: conductor[0],
-            success: true
-        })
+        const conductor = await pool.query (`SELECT * FROM conductores WHERE usuario = ?`, [usuario])
+        const results = await pool.query (`SELECT * FROM calificaciones WHERE conductor = ?`, [usuario]) 
+        if (results.length > 0){
+            const calificaciones = await pool.query (`SELECT SUM(calificacion) as calificacion, COUNT(id) as nro_calificaciones
+                                                      FROM calificaciones WHERE conductor = ?`, [usuario])
+            return res.json ({
+                conductor: conductor[0],
+                calificacion: calificaciones[0],
+                success: true
+            })
+        }else{
+            return res.json ({
+                conductor: conductor[0],
+                success: true
+            })
+        }
     } catch (error) {
         console.log ('error', error)
         return res.json ({
