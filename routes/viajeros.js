@@ -10,7 +10,7 @@ router.post ('/app/viajero', async (req, res) => {
     console.log ('entra 8')
     const newViajero = {nombres, fecha_nacimiento, tipo_documento, nro_documento, nro_telefono, correo, habilitado, direccion_principal, foto, longitud, latitud, usuario}
     try{
-        pool.query ('INSERT INTO usuarios_viajeros set ?', [newViajero])
+        await pool.query ('INSERT INTO usuarios_viajeros set ?', [newViajero])
         const viajero = await pool.query ('SELECT * FROM usuarios_viajeros WHERE usuario = ?', [usuario])
 
         return res.json ({

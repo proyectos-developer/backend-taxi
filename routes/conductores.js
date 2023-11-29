@@ -125,7 +125,6 @@ router.post ('/app/conductor/documentos/:usuario', async (req, res) => {
     const {usuario} = req.params
 
     const updateDocumentos = {foto_licencia, foto_documento}
-    console.log ('entra')
     try{
         await pool.query ('UPDATE conductores set ? WHERE usuario = ?', [updateDocumentos, usuario])
         const documentos = await pool.query (`SELECT foto_licencia, foto_documento FROM conductores WHERE usuario = ?`, [usuario])
