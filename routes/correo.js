@@ -4,18 +4,18 @@ const router = express.Router()
 const hbs = require('nodemailer-express-handlebars')
 const path = require('path')
 
-const pool = require('../../database')
+const pool = require('../database')
 
 const nodemailer = require('nodemailer')
 const SMTPTransport = require('nodemailer/lib/smtp-transport')
 
 var transporter = nodemailer.createTransport( new SMTPTransport ({
-    host: 'babysos.pe',
+    host: 'taxi-huaraz.com',
     secure: true,
     port: 465,
     auth: {
-        user: 'no-responder@babysos.pe',
-        pass: '37BYIjdZ'
+        user: 'no-reply@taxi-huaraz.com',
+        pass: '7RwC:cr.T34Vm!q'
     },
     tls: {
         rejectUnauthorized: false
@@ -36,17 +36,17 @@ const handlebarOptions = {
 transporter.use('compile', hbs(handlebarOptions))
 
 router.post('/admin/correo/nuevo/password', async (req, res) => {
-    const { correo } = req.body
+    const { correo, codigo, tipo } = req.body
 
-    const usuarios = await pool.query ('SELECT * FROM admins JOIN usersadmins ON usersadmins.usuario = admins.usuario WHERE admins.correo = ?', [correo])
-    if (usuarios.length === 1){
+        const datos = await pool.query (`SELECT * FROM ${tipo === 'viajero' ? 'usuarios_viajeros' : 'conductores'} WHERE correo = ?`, [correo])
         var mailOptions = {
-            from: '"Baby SOS" <no-responder@babysos.pe>', // sender address
-            to: usuarios[0].correo, // list of receivers
-            subject: 'Olvide mi contraseña Baby SOS',
+            from: '"Taxi 24/7" <no-replay@taxi-huaraz.com>', // sender address
+            to: correo, // list of receivers
+            subject: 'Olvide mi contraseña Taxi 24/7',
             template: 'olvidepassword', // the name of the template file i.e email.handlebars
             context:{
-                nombres: usuarios[0].nombres // replace {{name}} with Adebola
+                nombres: datos[0].nombres, // replace {{name}} with Adebola
+                codigo: codigo,
             }
         }
     
@@ -62,11 +62,6 @@ router.post('/admin/correo/nuevo/password', async (req, res) => {
                 message: info
             })
         });        
-    }else{
-        return res.json ({
-            message: '1'
-        })
-    }
 })
 
 module.exports = router

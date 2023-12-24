@@ -814,3 +814,26 @@ ALTER TABLE sucursales
 DESCRIBE sucursales;
 
 users
+
+/**Tours**/
+CREATE TABLE tours(
+    id INT(11) NOT NULL,
+    region VARCHAR (100) NOT NULL,
+    provincia VARCHAR (100) NOT NULL,
+    distrito VARCHAR (100) NOT NULL,
+    codigo_recurso VARCHAR(100) NOT NULL,
+    nombre_recurso VARCHAR(100) NOT NULL,
+    categoria VARCHAR(100) NOT NULL,
+    tipo_categoria VARCHAR(100) NOT NULL,
+    tipo_sub_categoria VARCHAR(100) NOT NULL,
+    latitud DOUBLE NOT NULL,
+    longitud DOUBLE NOT NULL
+);
+
+ALTER TABLE tours
+    ADD PRIMARY KEY(id);
+
+ALTER TABLE tours
+    MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
+
+DESCRIBE tours;

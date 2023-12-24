@@ -15,6 +15,26 @@ const app = express()
 app.use(cors())
 require ('./lib/passport')
 
+const admin = require('firebase-admin')
+const serviceAccount = require('./keyaccount.json')
+
+const config_firebase = {
+    apiKey: "AIzaSyD4Ua7VkZvjjzMktGX449aPUszce7udZEg",
+    authDomain: "taxi-24-7-90a56.firebaseapp.com",
+    databaseURL: "https://taxi-24-7-90a56-default-rtdb.firebaseio.com",
+    projectId: "taxi-24-7-90a56",
+    storageBucket: "taxi-24-7-90a56.appspot.com",
+    messagingSenderId: "125447927007",
+    appId: "1:125447927007:web:7dbe118882c81c938e256a",
+    measurementId: "G-FK01YMHX01"
+}
+
+admin.initializeApp({
+    credential: admin.credential.cert (serviceAccount),
+    databaseURL: config_firebase.databaseURL,
+    storageBucket: config_firebase.storageBucket
+})
+
 /**Configuraciones */
 app.set ('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views')); 
@@ -67,6 +87,9 @@ app.use(require('./routes/viajes.js'))
 app.use(require('./routes/cupones.js'))
 app.use(require('./routes/calificaciones.js'))
 app.use(require('./routes/compartir.js'))
+app.use(require('./routes/notificaciones.js'))
+app.use(require('./routes/tour.js'))
+app.use(require('./routes/correo.js'))
 
 //Publico
 app.use(express.static(path.join(__dirname, 'public')))
