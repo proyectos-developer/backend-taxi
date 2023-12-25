@@ -39,29 +39,35 @@ router.post('/admin/correo/nuevo/password', async (req, res) => {
     const { correo, codigo, tipo } = req.body
 
         const datos = await pool.query (`SELECT * FROM ${tipo === 'viajero' ? 'usuarios_viajeros' : 'conductores'} WHERE correo = ?`, [correo])
-        var mailOptions = {
-            from: '"Taxi 24/7" <no-replay@taxi-huaraz.com>', // sender address
-            to: correo, // list of receivers
-            subject: 'Olvide mi contraseña Taxi 24/7',
-            template: 'olvidepassword', // the name of the template file i.e email.handlebars
-            context:{
-                nombres: datos[0].nombres, // replace {{name}} with Adebola
-                codigo: codigo,
+        if (datos[0]){
+            var mailOptions = {
+                from: '"Taxi 24/7" <no-replay@taxi-huaraz.com>', // sender address
+                to: correo, // list of receivers
+                subject: 'Olvide mi contraseña Taxi 24/7',
+                template: 'olvidepassword', // the name of the template file i.e email.handlebars
+                context:{
+                    nombres: datos[0].nombres, // replace {{name}} with Adebola
+                    codigo: codigo,
+                }
             }
-        }
-    
-        // trigger the sending of the E-mail
-        transporter.sendMail(mailOptions, function(error, info){
-            if(error){
+        
+            // trigger the sending of the E-mail
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    return res.json ({
+                        message: 'error: ' + error
+                    })
+                }
+                
                 return res.json ({
-                    message: 'error: ' + error
+                    message: info
                 })
-            }
-            
-            return res.json ({
-                message: info
+            });        
+        }else {
+            return res.json({
+                error: '¡No existe el correo ingresado!'
             })
-        });        
+        }
 })
 
 module.exports = router
