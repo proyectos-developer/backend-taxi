@@ -97,11 +97,10 @@ router.post(`/user/update/correo/:usuario`, async (req, res) => {
 
 router.post(`/update/password/:usuario`, async (req, res) => {
     const { usuario } = req.params
-    const { password } = req.body
+    const { password, tipo } = req.body
     try {
-        const usuarios = await pool.query('SELECT * FROM users WHERE usuario = ?', [usuario])
+        const usuarios = await pool.query(`SELECT * FROM ${tipo === 'viajero' ? 'viajeros' : 'usuarios_conductores'} WHERE usuario = ?`, [usuario])
         const oldcontrasenia = usuarios[0].password
-    
         const validate = await bcrypt.compare(password, oldcontrasenia)
         if (validate) {
             return res.json({ message: '0' })
@@ -111,8 +110,8 @@ router.post(`/update/password/:usuario`, async (req, res) => {
                 password: new_password
             }
     
-            await pool.query('UPDATE users set ? WHERE usuario = ?', [nuevoDato, usuario])
-            const users = await pool.query('SELECT * from users WHERE usuario = ?', [usuario])
+            await pool.query(`UPDATE ${tipo === 'viajero' ? 'viajeros' : 'usuarios_conductores'} set ? WHERE usuario = ?`, [nuevoDato, usuario])
+            const users = await pool.query(`SELECT * from ${tipo === 'viajero' ? 'viajeros' : 'usuarios_conductores'} WHERE usuario = ?`, [usuario])
             return res.json({ 
                 user: users[0],
                 success: true
