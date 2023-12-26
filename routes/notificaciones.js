@@ -5,6 +5,7 @@ const admin = require ('firebase-admin')
 
 router.post('/app/push_notification', async (req, res) => {
     const {token, title, body, imageUrl, pantalla, id_viaje, viajero, conductor, user_token} = req.body
+    console.log(token, title, body, imageUrl, pantalla, id_viaje, viajero, conductor, user_token)
     try {
         
         await admin.messaging().sendMulticast({
