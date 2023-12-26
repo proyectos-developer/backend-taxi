@@ -837,3 +837,27 @@ ALTER TABLE tours
     MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
 
 DESCRIBE tours;
+
+/**Factura o boleta**/
+CREATE TABLE facturacion(
+    id INT(11) NOT NULL,
+    tipo VARCHAR (100) NOT NULL,
+    nombres VARCHAR (100) NOT NULL,
+    nro_documento VARCHAR (100) NOT NULL,
+    direccion_boleta VARCHAR (100) NOT NULL,
+    correo_boleta VARCHAR(100) NOT NULL,
+    razon_social VARCHAR (100) NOT NULL,
+    nro_ruc VARCHAR (100) NOT NULL,
+    direccion_factura VARCHAR (100) NOT NULL,
+    correo_factura VARCHAR(100) NOT NULL,
+    usuario VARCHAR(100) NOT NULL,
+    created_at timestamp NOT NULL DEFAULT current_timestamp
+);
+
+ALTER TABLE facturacion
+    ADD PRIMARY KEY(id);
+
+ALTER TABLE facturacion
+    MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
+
+DESCRIBE facturacion;

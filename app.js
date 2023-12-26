@@ -79,6 +79,7 @@ app.use(require('./routes'));
 app.use(require('./routes/authentication'))
 
 //app.use(require('./routes/sms.js'))
+app.use(require('./routes/facturacion.js'))
 app.use(require('./routes/carros.js'))
 app.use(require('./routes/tokens.js'))
 app.use(require('./routes/conductores.js'))
