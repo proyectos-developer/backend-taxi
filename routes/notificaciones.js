@@ -4,7 +4,7 @@ const router = express.Router()
 const admin = require ('firebase-admin')
 
 router.post('/app/push_notification', async (req, res) => {
-    const {token, title, body, imageUrl} = req.body
+    const {token, title, body, imageUrl, pantalla, id_viaje, viajero, conductor, user_token} = req.body
     try {
         
         await admin.messaging().sendMulticast({
@@ -16,14 +16,15 @@ router.post('/app/push_notification', async (req, res) => {
                     title: title,
                     body: body,
                     imageUrl: imageUrl,
-                    sound: 'default',
-                    default_sound: true,
-                    default_vibrate_timings: true,
-                    default_light_settings: true
+                    sound: 'default'
+                },
+                data: {
+                    screen: pantalla,
+                    id_viaje: id_viaje,
+                    viajero: viajero,
+                    conductor: conductor,
+                    user_token: user_token
                 }
-            },
-            options: {
-                
             }
         });
 
