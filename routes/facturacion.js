@@ -25,11 +25,11 @@ router.post ('/app/factura', async(req, res) => {
 })
 
 router.post ('/app/factura/:usuario', async(req, res) => {
-    const {tipo, nombres, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura} = req.body
+    const {tipo, nombres, tipo_documento, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura} = req.body
     const {usuario} = req.params
 
     try {
-        const updateFactura = {tipo, nombres, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura}
+        const updateFactura = {tipo, nombres, tipo_documento, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura}
         await pool.query(`UPDATE facturacion set ? WHERE usuario = ?`, [updateFactura, usuario])
         const datos = await pool.query (`SELECT * FROM facturacion WHERE usuario = ?`, [usuario])
         
