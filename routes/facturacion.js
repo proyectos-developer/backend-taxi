@@ -100,7 +100,7 @@ router.post ('/app/documento', async (req, res) => {
     }
 })
 
-router.get ('/app/documento/:tipo', async (req, res) => {
+router.get ('/app/numero/documentos/:tipo', async (req, res) => {
     const {tipo} = req.params
     try {
         const documentos = await pool.query ('SELECT * FROM boleta_factura WHERE tipo = ?', [tipo])
@@ -113,6 +113,23 @@ router.get ('/app/documento/:tipo', async (req, res) => {
             nro_documento: documentos.length,
             success: false
         })        
+    }
+})
+
+router.get ('/app/documento/:id_viaje', async (req, res) => {
+    const [id_viaje] = req.params
+
+    try {
+        const documento = await pool.query ('SELECT * FROM boleta_factura WHERE id_viaje = ?', [id_viaje])
+        return res.json({
+            documento: documento [0],
+            success: false
+        })
+    } catch (error) {
+        return res.json({
+            documento: {},
+            success: false
+        })
     }
 })
 
