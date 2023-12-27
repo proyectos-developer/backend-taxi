@@ -861,3 +861,22 @@ ALTER TABLE facturacion
     MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
 
 DESCRIBE facturacion;
+
+/**Factura o boleta**/
+CREATE TABLE boleta_factura(
+    id INT(11) NOT NULL,
+    tipo VARCHAR (100) NOT NULL,
+    nro_boleta BIGINT NOT NULL,
+    nro_factura BIGINT NOT NULL,
+    monto FLOAT NOT NULL,
+    fecha VARCHAR (100) NOT NULL,
+    created_at timestamp NOT NULL DEFAULT current_timestamp
+);
+
+ALTER TABLE boleta_factura
+    ADD PRIMARY KEY(id);
+
+ALTER TABLE boleta_factura
+    MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
+
+DESCRIBE boleta_factura;

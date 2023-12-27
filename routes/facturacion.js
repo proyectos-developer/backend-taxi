@@ -63,4 +63,57 @@ router.get ('/app/factura/:usuario', async(req, res) => {
     }
 })
 
+router.post ('/app/documento', async (req, res) => {
+    const {tipo, monto, fecha, usuario, id_viaje} = req.body
+    try {
+        const boletas = await pool.query ('SELECT * FROM boleta_factura WHERE tipo = ?', [tipo])
+        let nro_boleta = ''
+        let nro_factura = ''
+        if (tipo === 'boleta'){
+            nro_boleta =  boletas.length + 1 < 10 ? `0000${boletas.length + 1}` : boletas.length + 1 < 100 ? `$000{boletas.length + 1}`: boletas.length + 1 < 1000 ? 
+                         `00${boletas.length + 1}` : boletas.length + 1 < 10000 ? `0${boletas.length + 1}`: boletas.length + 1 < 100000 ? `${boletas.length + 1}` : ``
+        }else if(tipo === 'factura'){
+            nro_factura =  boletas.length + 1 < 10 ? `0000${boletas.length + 1}` : boletas.length + 1 < 100 ? `$000{boletas.length + 1}`: boletas.length + 1 < 1000 ? 
+                         `00${boletas.length + 1}` : boletas.length + 1 < 10000 ? `0${boletas.length + 1}`: boletas.length + 1 < 100000 ? `${boletas.length + 1}` : ``
+        }
+        const newDoc = {
+            tipo,
+            nro_boleta,
+            nro_factura,
+            monto,
+            fecha,
+            id_viaje,
+            usuario
+        }
+
+        const nuevo_doc = await pool.query ('INSERT INTO boleta_factura set ?', [newDoc])
+        const documento = await pool.query ('SELECT * FROM boleta_factura WHERE id = ?', nuevo_doc.insertId)
+        return res.json ({
+            documento: documento[0],
+            success: true
+        })
+    } catch (error) {
+        return res.json ({
+            documento: {},
+            success: false
+        })        
+    }
+})
+
+router.get ('/app/documento/:tipo', async (req, res) => {
+    const {tipo} = req.params
+    try {
+        const documentos = await pool.query ('SELECT * FROM boleta_factura WHERE tipo = ?', [tipo])
+        return res.json ({
+            nro_documento: documentos.length,
+            success: true
+        })
+    } catch (error) {
+        return res.json ({
+            nro_documento: documentos.length,
+            success: false
+        })        
+    }
+})
+
 module.exports = router
