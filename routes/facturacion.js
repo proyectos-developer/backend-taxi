@@ -5,10 +5,10 @@ const pool = require('../database')
 const { isLoggedIn } = require('../lib/auth')
 
 router.post ('/app/factura', async(req, res) => {
-    const {tipo, nombres, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura, usuario} = req.body
+    const {tipo, nombres, tipo_documento, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura, usuario} = req.body
 
     try {
-        const newFactura = {tipo, nombres, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura, usuario}
+        const newFactura = {tipo, nombres, tipo_documento, nro_documento, direccion_boleta, correo_boleta, razon_social, nro_ruc, direccion_factura, correo_factura, usuario}
         const nuevos_datos = await pool.query(`INSERT INTO facturacion set ?`, [newFactura])
         const datos = await pool.query (`SELECT * FROM facturacion WHERE id = ?`, [nuevos_datos.insertId])
         
