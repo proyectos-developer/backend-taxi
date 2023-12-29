@@ -117,7 +117,7 @@ router.get ('/app/numero/documentos/:tipo', async (req, res) => {
 })
 
 router.get ('/app/documento/:id_viaje', async (req, res) => {
-    const [id_viaje] = req.params
+    const {id_viaje} = req.params
 
     try {
         const documento = await pool.query ('SELECT * FROM boleta_factura WHERE id_viaje = ?', [id_viaje])

@@ -879,4 +879,4 @@ ALTER TABLE boleta_factura
 ALTER TABLE boleta_factura
     MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
 
-DESCRIBE boleta_factura;
+DESCRIBE boleta_factura; 
