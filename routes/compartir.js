@@ -86,12 +86,12 @@ router.get ('/app/compartir/codigo/:usuario/:codigo', async (req, res) => {
             const compartido = await pool.query ('SELECT * FROM app_compartida WHERE codigo = ? AND usuario = ?', [codigo, usuario])
             if (compartido.length > 0){
                 return res.json ({
-                    message: '1',
+                    message: '1', /**puede usarlo */
                     success: true
                 })
             }else{
                 return res.json ({
-                    message: '0',
+                    message: '0', /**no existe el código */
                     success: true
                 })
             }
