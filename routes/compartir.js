@@ -41,17 +41,17 @@ router.post ('/app/compartir/usuario', async (req, res) => {
     }
 })
 
-router.post ('/app/compartir/usado/:usuario', async (req, res) => {
-    const {usuario} = req.params
-    const {usado, codigo} = req.body
+router.post ('/app/compartir/usado/:codigo', async (req, res) => {
+    const {codigo} = req.params
+    const {usado} = req.body
 
     try {
         const updateUsado = {
             usado
         }
 
-        await pool.query ('UPDATE app_compartida set ? WHERE usuario = ? AND codigo = ?', [updateUsado, usuario, codigo])
-        const compartido = await pool.query ('SELECT * FROM app_compartida WHERE usuario = ? AND codigo = ?', [usuario, codigo])
+        await pool.query ('UPDATE app_compartida set ? WHERE codigo = ?', [updateUsado, codigo])
+        const compartido = await pool.query ('SELECT * FROM app_compartida WHERE codigo = ?', [codigo])
 
         if (compartido.length === 0){
             return res.json({
