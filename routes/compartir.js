@@ -72,18 +72,18 @@ router.post ('/app/compartir/usado/:usuario', async (req, res) => {
     }
 })
 
-router.get ('/app/compartir/codigo/:usuario/:codigo', async (req, res) => {
-    const {usuario, codigo} = req.params
+router.get ('/app/compartir/codigo/:codigo', async (req, res) => {
+    const {codigo} = req.params
 
     try {
-        const compartido = await pool.query ('SELECT * FROM app_compartida WHERE usuario = ? AND codigo = ? AND usado = 1', [usuario, codigo])
+        const compartido = await pool.query ('SELECT * FROM app_compartida WHERE codigo = ? AND usado = 1', [codigo])
         if (compartido.length > 0){
             return res.json ({
                 message: 'El código ya a sido usado',
                 success: true
             })
         }else{
-            const compartido = await pool.query ('SELECT * FROM app_compartida WHERE codigo = ? AND usuario = ?', [codigo, usuario])
+            const compartido = await pool.query ('SELECT * FROM app_compartida WHERE codigo = ?', [codigo])
             if (compartido.length > 0){
                 return res.json ({
                     message: '1', /**puede usarlo */
