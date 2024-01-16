@@ -880,3 +880,24 @@ ALTER TABLE boleta_factura
     MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
 
 DESCRIBE boleta_factura; 
+
+/**Conductor cobrar**/
+CREATE TABLE cobrar_conductor(
+    id INT(11) NOT NULL,
+    usuario VARCHAR (100) NOT NULL,
+    medio_pago VARCHAR (100) NOT NULL,
+    nro_yape VARCHAR (100) NOT NULL,
+    nro_plin VARCHAR (100) NOT NULL,
+    nombre_banco VARCHAR (100) NOT NULL,
+    nro_cuenta VARCHAR (100) NOT NULL,
+    cuenta_interbancaria VARCHAR (100) NOT NULL,
+    created_at timestamp NOT NULL DEFAULT current_timestamp
+);
+
+ALTER TABLE cobrar_conductor
+    ADD PRIMARY KEY(id);
+
+ALTER TABLE cobrar_conductor
+    MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 1;
+
+DESCRIBE cobrar_conductor; 

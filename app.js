@@ -90,6 +90,7 @@ app.use(require('./routes/calificaciones.js'))
 app.use(require('./routes/compartir.js'))
 app.use(require('./routes/notificaciones.js'))
 app.use(require('./routes/tour.js'))
+app.use(require('./routes/cobrar.js'))
 app.use(require('./routes/correo.js'))
 
 //Publico
